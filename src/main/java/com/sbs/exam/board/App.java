@@ -2,6 +2,10 @@ package com.sbs.exam.board;
 
 import com.sbs.exam.board.container.Container;
 
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
@@ -23,6 +27,48 @@ public class App {
         System.out.printf("내용) ");
         String content = sc.nextLine();
         int id = ++articleLastId;
+
+        Connection conn = null;
+        PreparedStatement pstat = null;
+
+        try {
+          Class.forName("com.mysql.jdbc.Driver");
+
+          String url = "jdbc:mysql://127.0.0.1:3306/text_board?useUnicode=true&characterEncoding=utf8&autoReconnect=true&serverTimezone=Asia/Seoul&useOldAliasMetadataBehavior=true&zeroDateTimeNehavior=convertToNull";
+
+          conn = DriverManager.getConnection(url, "sbsst", "sbs123414");
+
+          String sql = "INSERT INTO article";
+          sql += " SET regDate = NOW()";
+          sql += ", updateDate = NOW()";
+          sql += ", title = \"" + title + "\"";
+          sql += ", content = \"" + content + "\"";
+
+          pstat = conn.prepareStatement(sql);
+          int affectRows = pstat.executeUpdate();
+
+          System.out.println("affectRows : " + affectRows);
+          System.out.println("sql : " + sql);
+        } catch (ClassNotFoundException e) {
+          System.out.println("드라이버 로딩 실패");
+        } catch (SQLException e) {
+          System.out.println("에러: " + e);
+        } finally {
+          try {
+            if (conn != null && !conn.isClosed()) {
+              conn.close();
+            }
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+          try {
+            if (pstat != null && !pstat.isClosed()) {
+              pstat.close();
+            }
+          } catch (SQLException e) {
+            e.printStackTrace();
+          }
+        }
 
         Article article = new Article(id, title, content);
         System.out.println("생성된 게시물 객체 : " + article);

@@ -146,7 +146,7 @@ public class App {
       sql.append("FROM article");
       sql.append("WHERE id = ?", id);
 
-      boolean articleIsExists = DBUtil.selectRowIntValue(conn, sql) == 1;
+      boolean articleIsExists = DBUtil.selectRowBooleanValue(conn, sql);
 
       if (articleIsExists == false) {
         System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
@@ -213,10 +213,23 @@ public class App {
         System.out.printf("로그인 아이디 : ");
         loginId = sc.nextLine().trim();
 
-        if(loginId.length() == 0) {
+        if (loginId.length() == 0) {
           System.out.println("로그인 아이디를 입력해주세요.");
           continue;
         }
+
+        SecSql sql = new SecSql();
+        sql.append("SELECT COUNT(*) > 0");
+        sql.append("FROM `member`");
+        sql.append("WHERE loginId = ?", loginId);
+
+        boolean isLoginIdDup = DBUtil.selectRowBooleanValue(conn, sql);
+
+        if (isLoginIdDup) {
+          System.out.printf("%s(은)는 이미 사용중인 로그인 아이디입니다.\n", loginId);
+          continue;
+        }
+
         break;
       }
 
@@ -225,7 +238,7 @@ public class App {
         System.out.printf("로그인 비번 : ");
         loginPw = sc.nextLine().trim();
 
-        if(loginPw.length() == 0) {
+        if (loginPw.length() == 0) {
           System.out.println("로그인 비번을 입력해주세요.");
           continue;
         }
@@ -236,12 +249,12 @@ public class App {
           System.out.printf("로그인 비번 확인 : ");
           loginPwConfirm = sc.nextLine().trim();
 
-          if(loginPwConfirm.length() == 0) {
+          if (loginPwConfirm.length() == 0) {
             System.out.println("로그인 비번 확인을 입력해주세요 : ");
             continue;
           }
 
-          if(loginPw.equals(loginPwConfirm) == false) {
+          if (loginPw.equals(loginPwConfirm) == false) {
             System.out.println("로그인 비밀번호가 일치하지 않습니다. ");
             loginPwConfirmIsSame = false;
             break;
@@ -250,7 +263,7 @@ public class App {
           break;
         }
 
-        if(loginPwConfirmIsSame) {
+        if (loginPwConfirmIsSame) {
           break;
         }
       }
@@ -260,7 +273,7 @@ public class App {
         System.out.printf("이름 : ");
         name = sc.nextLine().trim();
 
-        if(name.length() == 0) {
+        if (name.length() == 0) {
           System.out.println("이름을 입력해주세요.");
           continue;
         }

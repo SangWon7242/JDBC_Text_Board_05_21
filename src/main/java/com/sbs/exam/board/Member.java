@@ -3,11 +3,11 @@ package com.sbs.exam.board;
 import java.util.Map;
 
 public class Member {
-  int id;
-  String regDate;
-  String updateDate;
-  String loginId;
-  String loginPw;
+  public int id;
+  public String regDate;
+  public String updateDate;
+  public String loginId;
+  public String loginPw;
   public Member(Map<String, Object> articleMap) {
     this.id = (int) articleMap.get("id");
     this.regDate = (String) articleMap.get("regDate");

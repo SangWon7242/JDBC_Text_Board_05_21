@@ -1,21 +1,10 @@
 package com.sbs.exam.board.controller;
 
-import com.sbs.exam.board.container.Container;
 import com.sbs.exam.board.util.DBUtil;
 import com.sbs.exam.board.util.SecSql;
 
-import java.sql.Connection;
-import java.util.Scanner;
+public class UsrMemberController extends Controller {
 
-public class UsrMemberController {
-  private Connection conn;
-  private Scanner sc;
-  public void setConn(Connection conn) {
-    this.conn = conn;
-  }
-  public void setScanner() {
-    this.sc = Container.scanner;
-  }
   public void join() {
     String loginId;
     String loginPw;

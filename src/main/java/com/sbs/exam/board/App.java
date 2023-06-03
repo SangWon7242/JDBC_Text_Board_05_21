@@ -86,7 +86,7 @@ public class App {
 
       List<Map<String, Object>> articleListMap = DBUtil.selectRows(conn, sql);
 
-      for(Map<String, Object> articleMap : articleListMap) {
+      for (Map<String, Object> articleMap : articleListMap) {
         articles.add(new Article(articleMap));
       }
 
@@ -102,6 +102,51 @@ public class App {
       for (Article article : articles) {
         System.out.printf("%d / %s\n", article.id, article.title);
       }
+    } else if (rq.getUrlPath().equals("/usr/article/detail")) {
+      int id = rq.getIntParam("id", 0);
+
+      if (id == 0) {
+        System.out.println("id를 올바르게 입력해주세요.");
+        return;
+      }
+
+      /*
+      SecSql sql = new SecSql();
+
+      sql.append("SELECT COUNT(*) AS cnt");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      boolean articleIsExists = DBUtil.selectRowIntValue(conn, sql) == 1;
+
+      if (articleIsExists == false) {
+        System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+        return;
+      }
+       */
+
+      SecSql sql = new SecSql();
+
+      sql.append("SELECT *");
+      sql.append("FROM article");
+      sql.append("WHERE id = ?", id);
+
+      Map<String, Object> articleMap = DBUtil.selectRow(conn, sql);
+
+      if(articleMap.isEmpty()) {
+        System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
+        return;
+      }
+
+      Article article = new Article(articleMap);
+
+      System.out.printf("== %d번 게시물 상세보기 ==\n", article.id);
+      System.out.printf("번호 : %d\n", article.id);
+      System.out.printf("작성날짜 : %s\n", article.regDate);
+      System.out.printf("수정날짜 : %s\n", article.updateDate);
+      System.out.printf("제목 : %s\n", article.title);
+      System.out.printf("내용 : %s\n", article.content);
+
     } else if (rq.getUrlPath().equals("/usr/article/modify")) {
       int id = rq.getIntParam("id", 0);
 
@@ -118,7 +163,7 @@ public class App {
 
       boolean articleIsExists = DBUtil.selectRowIntValue(conn, sql) == 1;
 
-      if(articleIsExists == false) {
+      if (articleIsExists == false) {
         System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
         return;
       }
@@ -156,7 +201,7 @@ public class App {
 
       boolean articleIsExists = DBUtil.selectRowIntValue(conn, sql) == 1;
 
-      if(articleIsExists == false) {
+      if (articleIsExists == false) {
         System.out.printf("%d번 게시글은 존재하지 않습니다.\n", id);
         return;
       }

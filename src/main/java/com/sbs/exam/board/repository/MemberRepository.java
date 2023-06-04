@@ -1,18 +1,13 @@
 package com.sbs.exam.board.repository;
 
-import com.sbs.exam.board.Article;
-import com.sbs.exam.board.Member;
+import com.sbs.exam.board.container.Container;
+import com.sbs.exam.board.dto.Member;
 import com.sbs.exam.board.util.DBUtil;
 import com.sbs.exam.board.util.SecSql;
 
-import java.sql.Connection;
 import java.util.Map;
 
 public class MemberRepository {
-  private Connection conn;
-  public MemberRepository(Connection conn) {
-    this.conn = conn;
-  }
 
   public boolean isLoginIdDup(String loginId) {
     SecSql sql = new SecSql();
@@ -20,7 +15,7 @@ public class MemberRepository {
     sql.append("FROM `member`");
     sql.append("WHERE loginId = ?", loginId);
 
-    return DBUtil.selectRowBooleanValue(conn, sql);
+    return DBUtil.selectRowBooleanValue(Container.conn, sql);
   }
 
   public int join(String loginId, String loginPw, String name) {
@@ -33,7 +28,7 @@ public class MemberRepository {
     sql.append(", loginPw = ?", loginPw);
     sql.append(", name = ?", name);
 
-    return DBUtil.insert(conn, sql);
+    return DBUtil.insert(Container.conn, sql);
   }
 
   public Member getMemberByLoginId(String loginId) {
@@ -43,7 +38,7 @@ public class MemberRepository {
     sql.append("FROM `member`");
     sql.append("WHERE loginId = ?", loginId);
 
-    Map<String, Object> memberMap = DBUtil.selectRow(conn, sql);
+    Map<String, Object> memberMap = DBUtil.selectRow(Container.conn, sql);
 
     if(memberMap.isEmpty()) {
       return null;

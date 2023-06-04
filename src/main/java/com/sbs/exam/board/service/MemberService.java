@@ -1,16 +1,15 @@
 package com.sbs.exam.board.service;
 
-import com.sbs.exam.board.Member;
+import com.sbs.exam.board.container.Container;
+import com.sbs.exam.board.dto.Member;
 import com.sbs.exam.board.repository.MemberRepository;
-import com.sbs.exam.board.util.DBUtil;
-import com.sbs.exam.board.util.SecSql;
 
 import java.sql.Connection;
 
 public class MemberService {
   private MemberRepository memberRepository;
-  public MemberService(Connection conn) {
-    memberRepository = new MemberRepository(conn);
+  public MemberService() {
+    memberRepository = Container.memberRepository;
   }
   public boolean isLoginIdDup(String loginId) {
     return memberRepository.isLoginIdDup(loginId);

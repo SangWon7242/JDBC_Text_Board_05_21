@@ -1,16 +1,16 @@
 package com.sbs.exam.board.service;
 
-import com.sbs.exam.board.Article;
+import com.sbs.exam.board.container.Container;
+import com.sbs.exam.board.dto.Article;
 import com.sbs.exam.board.repository.ArticleRepository;
-import com.sbs.exam.board.repository.MemberRepository;
 
 import java.sql.Connection;
 import java.util.List;
 
 public class ArticleService {
   private ArticleRepository articleRepository;
-  public ArticleService(Connection conn) {
-    articleRepository = new ArticleRepository(conn);
+  public ArticleService() {
+    articleRepository = Container.articleRepository;
   }
 
   public int write(String title, String content) {

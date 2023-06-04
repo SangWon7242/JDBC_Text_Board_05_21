@@ -1,5 +1,6 @@
 package com.sbs.exam.board.service;
 
+import com.sbs.exam.board.Member;
 import com.sbs.exam.board.repository.MemberRepository;
 import com.sbs.exam.board.util.DBUtil;
 import com.sbs.exam.board.util.SecSql;
@@ -17,5 +18,9 @@ public class MemberService {
 
   public int join(String loginId, String loginPw, String name) {
     return memberRepository.join(loginId, loginPw, name);
+  }
+
+  public Member getMemberByLoginId(String loginId) {
+    return memberRepository.getMemberByLoginId(loginId);
   }
 }

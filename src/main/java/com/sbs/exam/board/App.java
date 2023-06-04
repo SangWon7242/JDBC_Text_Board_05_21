@@ -73,6 +73,8 @@ public class App {
       usrArticleController.doDelete();
     } else if (rq.getUrlPath().equals("/usr/member/join")) {
       usrMemberController.join();
+    } else if (rq.getUrlPath().equals("/usr/member/login")) {
+      usrMemberController.login();
     } else if (rq.getUrlPath().equals("/exit")) {
       System.out.println("프로그램 종료");
       System.exit(0);

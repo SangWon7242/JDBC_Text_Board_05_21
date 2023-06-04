@@ -58,15 +58,8 @@ public class App {
   }
 
   private void action(Rq rq, Connection conn, Scanner sc) {
-    UsrArticleController usrArticleController = new UsrArticleController();
-    usrArticleController.setRq(rq);
-    usrArticleController.setConn(conn);
-    usrArticleController.setScanner(sc);
-
-    UsrMemberController usrMemberController = new UsrMemberController();
-    usrMemberController.setRq(rq);
-    usrMemberController.setConn(conn);
-    usrMemberController.setScanner(sc);
+    UsrArticleController usrArticleController = new UsrArticleController(conn, sc, rq);
+    UsrMemberController usrMemberController = new UsrMemberController(conn, sc, rq);
 
     if (rq.getUrlPath().equals("/usr/article/write")) {
       usrArticleController.doWrite();
